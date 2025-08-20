@@ -11,7 +11,68 @@
 <body>
   <div id="root"></div>
 
-  <!-- 여기서 index.js를 불러옴 -->
+import React, { useEffect, useMemo, useRef, useState } from "react";
+{entry.details && (
+<p className="text-sm whitespace-pre-wrap text-muted-foreground line-clamp-4">{entry.details}</p>
+)}
+{entry.nextActions && (
+<div className="text-sm"><b>다음 액션:</b> <span className="text-muted-foreground whitespace-pre-wrap">{entry.nextActions}</span></div>
+)}
+<div className="flex items-center justify-end gap-2 pt-2 print:hidden">
+<Button variant="outline" size="sm" className="gap-1" onClick={()=>setEditing(entry)}><PencilLine className="h-4 w-4"/> 수정</Button>
+<Button variant="destructive" size="sm" className="gap-1" onClick={()=>{
+if(confirm('정말 삭제하시겠습니까?')) remove(entry.id);
+}}><Trash2 className="h-4 w-4"/> 삭제</Button>
+</div>
+</CardContent>
+</Card>
+</motion.div>
+))}
+</AnimatePresence>
+</div>
+
+
+{filtered.length === 0 && (
+<Card>
+<CardContent className="py-10 text-center text-sm text-muted-foreground">
+아직 기록이 없습니다. 상단의 <b>업무일지 작성</b>에서 첫 기록을 추가해 보세요.
+</CardContent>
+</Card>
+)}
+</section>
+
+
+{/* 태그 요약 */}
+{allTags.length>0 && (
+<section className="space-y-3 print:hidden">
+<h3 className="text-base font-semibold">태그 요약</h3>
+<div className="flex flex-wrap gap-2">
+{allTags.map(t => (
+<Badge key={t} variant="secondary" className="cursor-pointer" onClick={()=>{ setTag(t); window.scrollTo({top:0, behavior:'smooth'}); }}>#{t}</Badge>
+))}
+</div>
+</section>
+)}
+
+
+<footer className="pt-6 text-center text-xs text-muted-foreground print:hidden">
+<p>데이터는 브라우저 로컬 저장소(localStorage)에만 저장됩니다. 다른 기기와 동기화되지 않습니다.</p>
+</footer>
+</div>
+
+
+{/* 인쇄 스타일 보정 */}
+<style>{`
+@media print {
+.print\\:hidden { display: none !important; }
+.print\\:space-y-3 > * + * { margin-top: 0.75rem; }
+.line-clamp-4 { -webkit-line-clamp: unset; line-clamp: unset; }
+}
+`}</style>
+</div>
+);
+}
   <script type="text/babel" src="index.js"></script>
 </body>
 </html>
+
